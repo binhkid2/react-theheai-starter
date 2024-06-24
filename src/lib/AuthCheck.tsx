@@ -14,16 +14,16 @@ export default function AuthCheckContent({ children }: DashboardLayoutProps) {
    
   return (
     <>
-     {user.zaloId !== "" ? (
-    <>{children}</>
+     {user.zaloId === "" ? (
+   <div className="container-scss">
+   <div className="top-scss"></div>
+   <div className="bottom-scss"></div>
+   <div className="center-scss">
+  <ButtonLogin/>
+   </div>
+ </div>
   ) : (
-    <div className="container-scss">
-      <div className="top-scss"></div>
-      <div className="bottom-scss"></div>
-      <div className="center-scss">
-     <ButtonLogin/>
-      </div>
-    </div>
+    <>{children}</>
   )}
     </>
   );
