@@ -1,9 +1,8 @@
 import AuthCheckContent from "../lib/AuthCheck"
 import { encryptStorage } from "../lib/encrypt-storage";
-import { initUser } from "../lib/store";
 
 export default function ProtectedPage() {
-    const user  =  encryptStorage.getItem('theheai-userInfo')  || initUser  //Demo dont use like this.Use state management instead
+    const user  =  encryptStorage.getItem('theheai-userInfo')    //Demo dont use like this.Use state management instead
     console.log(user)
   return (
     <>

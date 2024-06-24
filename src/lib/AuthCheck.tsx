@@ -2,14 +2,13 @@
 import { encryptStorage } from "./encrypt-storage";
 import './AuthCheck.scss'
 import ButtonLogin from "./ButtonLogin";
-import { initUser } from "./store";
 
  
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
-export default function AuthCheckContent({ children }: DashboardLayoutProps) { 
-  const user  =  encryptStorage.getItem('theheai-userInfo')  || initUser
+export default  function AuthCheckContent({ children }: DashboardLayoutProps) { 
+  const user  =  encryptStorage.getItem('theheai-userInfo') 
   
    
   return (
