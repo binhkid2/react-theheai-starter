@@ -6,7 +6,7 @@ import ButtonLogin from "./ButtonLogin";
 import { isAuthenticatedStore } from './store';
 //@ts-ignore
   
-export default  function AuthCheckContent({children}) { 
+export default  function AuthCheck({children}) { 
   const [isAuthenticated, ] = useAtom(isAuthenticatedStore);
   return (
     <>

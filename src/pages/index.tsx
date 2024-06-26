@@ -22,13 +22,13 @@ export default function Home() {
   const location = useLocation() 
   async function getUserInfo(token:string){
     //get_jwt_key 
-    const url_get_jwt_key =  "https://sandbox.theheai.xyz/theheai-sandbox/get-jwt-key"
+    const url_get_jwt_key = import.meta.env.VITE_THEHEAI_SANDBOX_GET_JWT_KEY;
     const getSecretkey = await axios.get(url_get_jwt_key);
     const secretKey = getSecretkey.data.jwtSecretKey;
     const userIdToken = jwt.verify(token, secretKey) as JwtPayloadWithUserId;
     const userId = userIdToken.userId;
 //get userInfo
-const getUserInfoUrl = "https://sandbox.theheai.xyz/theheai-sandbox/check-userinfo";
+const getUserInfoUrl = import.meta.env.VITE_THEHEAI_SANDBOX_CHECKUSER;
 axios.post(getUserInfoUrl, { id: userId })
     .then((getUserResponse) => {
         const userResponse = getUserResponse.data.userInfo;

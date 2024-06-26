@@ -1,19 +1,16 @@
-import AuthCheckContent from "../lib/AuthCheck"
-import { encryptStorage } from "../lib/encrypt-storage";
+import { useAtom } from "jotai";
+import AuthCheck from "../lib/AuthCheck"
+import { userInfoStore } from "../lib/store";
 
 export default function ProtectedPage() {
-    const user  =  encryptStorage.getItem('theheai-userInfo')    //Demo dont use like this.Use state management instead
-    console.log(user)
+  const [userInfo, ] = useAtom(userInfoStore);
   return (
     <>
-    <AuthCheckContent>
+    <AuthCheck>
    <h1>Protected Router</h1>
-
-Hello {user.name || ''}
-<img src={user.avatar || ''} alt="user avatar" className="w-20 h-20 object-cover"/>
-
-
-   </AuthCheckContent>
+Hello {userInfo.name}
+<img src={userInfo.avatar} alt="user avatar" className="w-20 h-20 object-cover"/>
+   </AuthCheck>
     </>
   );
 }
