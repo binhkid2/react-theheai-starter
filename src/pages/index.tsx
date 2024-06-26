@@ -12,22 +12,20 @@ export default function Home() {
   const [isAuthenticated,setIsAuthenticated ] = useAtom(isAuthenticatedStore);
   const [, setUserInfo] = useAtom(userInfoStore);
   const [isLoading,setIsLoading]=useState(false)
-  const showToast = (input:string) => toast.error(input, {
-    position: "bottom-center"
-  })
+ 
   interface JwtPayloadWithUserId extends jwt.JwtPayload {
     userId: string;
   }
   const location = useLocation() 
   async function getUserInfo(token:string){
-    //get_jwt_key 
-    const url_get_jwt_key = import.meta.env.VITE_THEHEAI_SANDBOX_GET_JWT_KEY;
+    //get_jwt_key  
+    const url_get_jwt_key = "https://sandbox.theheai.xyz/theheai-sandbox/get-jwt-key"
     const getSecretkey = await axios.get(url_get_jwt_key);
     const secretKey = getSecretkey.data.jwtSecretKey;
     const userIdToken = jwt.verify(token, secretKey) as JwtPayloadWithUserId;
     const userId = userIdToken.userId;
 //get userInfo
-const getUserInfoUrl = import.meta.env.VITE_THEHEAI_SANDBOX_CHECKUSER;
+const getUserInfoUrl = "https://sandbox.theheai.xyz/theheai-sandbox/check-userinfo"
 axios.post(getUserInfoUrl, { id: userId })
     .then((getUserResponse) => {
         const userResponse = getUserResponse.data.userInfo;
@@ -39,7 +37,7 @@ axios.post(getUserInfoUrl, { id: userId })
     .catch((error) => {
       setIsLoading(false)
         console.error('Failed to get user information', error);
-       showToast('Failed to get user information') //toast error
+        toast.error('Failed to get user information') //toast error
     });
   }
   useEffect(() => {
@@ -49,12 +47,15 @@ axios.post(getUserInfoUrl, { id: userId })
       console.log('Token:', token);
       getUserInfo(token)
     }else{ 
-      showToast('No token provided! ❌❌❌')
+      toast.error('No token provided! ❌❌❌')
     }
   }, [location.search]);
   return (
     <> 
-    <Toaster/>
+   <Toaster
+  position="bottom-center"
+  reverseOrder={false}
+/>
     {isAuthenticated && !isLoading && <HomeContent />}
       {isLoading && <LoadingOverlay />}
       {!isAuthenticated && !isLoading && <Page404 />}
