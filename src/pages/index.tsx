@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
-import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import jwt from 'jsonwebtoken'; 
 import { useAtom } from "jotai";
