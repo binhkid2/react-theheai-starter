@@ -1,19 +1,16 @@
- 
-import { encryptStorage } from "./encrypt-storage";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+  
+import { useAtom } from 'jotai';
 import './AuthCheck.scss'
 import ButtonLogin from "./ButtonLogin";
-
- 
-interface DashboardLayoutProps {
-  children: React.ReactNode;
-}
-export default  function AuthCheckContent({ children }: DashboardLayoutProps) { 
-  const user  =  encryptStorage.getItem('theheai-userInfo') 
+import { isAuthenticatedStore } from './store';
+//@ts-ignore
   
-   
+export default  function AuthCheckContent({children}) { 
+  const [isAuthenticated, ] = useAtom(isAuthenticatedStore);
   return (
     <>
-     {user.zaloId === "" ? (
+     {!isAuthenticated ? (
    <div className="container-scss">
    <div className="top-scss"></div>
    <div className="bottom-scss"></div>

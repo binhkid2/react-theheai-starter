@@ -17,4 +17,6 @@ export interface UserType {
     prompt: null,
     zaloId: "",
   };
-  
+  import { atom } from 'jotai'
+  export const userInfoStore  = atom<UserType>(initUser)
+export const isAuthenticatedStore  = atom<boolean>(false)
