@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import axios from "axios";
@@ -16,21 +16,27 @@ export default function Home() {
   const location = useLocation();
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const token = searchParams.get('token');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async function getUserInfo(token:any) {
+    const fetchData = async () => {
+      const searchParams = new URLSearchParams(location.search);
+      const token = searchParams.get('token');
+
+      if (!token) {
+        toast.error('No token provided! ❌❌❌');
+        return;
+      }
+
       try {
+        setIsLoading(true);
+
         // Fetch secret key from your API
         const getSecretKeyResponse = await axios.get("https://sandbox.theheai.xyz/theheai-sandbox/get-jwt-key");
         const secretKey = getSecretKeyResponse.data.jwtSecretKey;
-
+        interface JwtPayloadWithUserId extends jwt.JwtPayload {
+          userId: string;
+        }
         // Decode JWT and extract userId
-        const userIdToken = jwt.verify(token, secretKey);
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        const userIdToken = jwt.verify(token, secretKey) as JwtPayloadWithUserId;
         const userId = userIdToken.userId;
-
         // Fetch user info using userId
         const getUserInfoUrl = "https://sandbox.theheai.xyz/theheai-sandbox/check-userinfo";
         const getUserInfoResponse = await axios.post(getUserInfoUrl, { id: userId });
@@ -45,17 +51,10 @@ export default function Home() {
         console.error('Failed to get user information', error);
         toast.error('Failed to get user information');
       }
-    }
+    };
 
-    if (token) {
-      console.log('Token:', token);
-      setIsLoading(true);
-      getUserInfo(token);
-    } else {
-      setIsLoading(false);
-      toast.error('No token provided! ❌❌❌');
-    }
-  }, [location.search]);
+    fetchData();
+  }, [location.search, setIsAuthenticated, setUserInfo]);
 
   return (
     <>
