@@ -2,7 +2,6 @@ import  { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import axios from "axios";
-import jwt from 'jsonwebtoken'; 
 import { useAtom } from "jotai";
 import { isAuthenticatedStore, userInfoStore } from "../lib/store";
 import LoadingOverlay from "../lib/LoadingOverlay";
@@ -27,21 +26,10 @@ export default function Home() {
 
       try {
         setIsLoading(true);
-
-        // Fetch secret key from your API
-        const getSecretKeyResponse = await axios.get("https://sandbox.theheai.xyz/theheai-sandbox/get-jwt-key");
-        const secretKey = getSecretKeyResponse.data.jwtSecretKey;
-        interface JwtPayloadWithUserId extends jwt.JwtPayload {
-          userId: string;
-        }
-        // Decode JWT and extract userId
-        const userIdToken = jwt.verify(token, secretKey) as JwtPayloadWithUserId;
-        const userId = userIdToken.userId;
-        // Fetch user info using userId
-        const getUserInfoUrl = "https://sandbox.theheai.xyz/theheai-sandbox/check-userinfo";
-        const getUserInfoResponse = await axios.post(getUserInfoUrl, { id: userId });
+        // Fetch user info using token
+        const getUserInfoUrl = "http://localhost:8080/api/verify-token";
+        const getUserInfoResponse = await axios.post(getUserInfoUrl, { token: token });
         const userResponse = getUserInfoResponse.data.userInfo;
-
         // Update global state
         setUserInfo(userResponse);
         setIsAuthenticated(true);
