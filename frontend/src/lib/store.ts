@@ -4,7 +4,6 @@ export interface UserType {
     currentCredit: number;
     name: string;
     proDayLeft: number;
-    prompt: null; // Assuming 'prompt' can be null based on your example
     zaloId: string;
   }
   
@@ -14,7 +13,6 @@ export interface UserType {
     currentCredit: 0,
     name: "",
     proDayLeft: 0,
-    prompt: null,
     zaloId: "",
   };
   import { atom } from 'jotai'
